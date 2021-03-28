@@ -8,6 +8,7 @@ import { useState } from "react";
 
 import axios from 'axios';
 import Stage from "components/Stage/Stage";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -37,12 +38,16 @@ function Room() {
 
   const socket = useContext(SocketContext);
 
+  const history = useHistory();
+
   const classes = useStyles();
 
   useEffect(() => {
     socket.emit('GetPlayerList', '');
 
-    socket.emit('Access', localStorage.getItem('username'));
+    if (step === 0) {
+      socket.emit('Access', localStorage.getItem('username'));
+    }
 
     socket.on('PlayerList', data => {
       setPlayers(JSON.parse(data));
@@ -57,17 +62,21 @@ function Room() {
     })
 
     socket.on('Start', data => {
-      axios.get('https://opentdb.com/api.php?amount=10').then(res => {
+      axios.get('https://opentdb.com/api.php?amount=3').then(res => {
         setQuestions(res.data.results);
         setStarted(true);
       }).catch(err => {
         console.log(err);
       })
     })
-  }, [socket, step])
+
+    socket.on('End', data => {
+      history.push('/end');
+    })
+  }, [socket, step, history])
 
   const onStart = () => {
-    axios.get('https://opentdb.com/api.php?amount=10').then(res => {
+    axios.get('https://opentdb.com/api.php?amount=3').then(res => {
       setQuestions(res.data.results);
       setStarted(true);
     }).catch(err => {

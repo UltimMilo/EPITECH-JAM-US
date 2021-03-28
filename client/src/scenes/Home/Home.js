@@ -30,8 +30,8 @@ function Home() {
 
   const [categories, setCategories] = useState([]);
 
-  const [username, setUsername] = useState('')
-  const [stages, setStages] = useState(10)
+  const [username, setUsername] = useState('');
+  const [stages, setStages] = useState(3);
   const [category, setCategory] = useState(0);
   const [roomCreated, setRoomCreated] = useState(false);
 

@@ -27,7 +27,10 @@ var started = false;
 var answers = 0;
 var good_answers = 0;
 
+var global_score = 0;
+
 var score = 0;
+var steps = 0;
 
 io.on("connection", (socket) => {
 
@@ -92,19 +95,31 @@ io.on("connection", (socket) => {
 
   socket.on('Answer', data => {
     console.log('Get answer !');
-    console.log(players);
     answers += 1;
     good_answers += data ? 1 : 0;
 
     if (answers === players.length) {
+      steps += 1;
       if (answers === good_answers) {
         score += 1;
       }
-      socket.to('room').emit('NextQuestion', answers === good_answers)
-      socket.emit('NextQuestion', answers === good_answers)
+      if (steps >= rules.stages_number) {
+        socket.to('room').emit('End', score);
+        socket.emit('End', score);
+      } else {
+        socket.to('room').emit('NextQuestion', answers === good_answers)
+        socket.emit('NextQuestion', answers === good_answers)
+      }
       answers = 0;
       good_answers = 0;
     }
+  })
+
+  socket.on('Score', data => {
+    socket.emit('Score', JSON.stringify({
+      score: score,
+      max: rules.stages_number,
+    }));
   })
 
   socket.on("disconnect", () => {
