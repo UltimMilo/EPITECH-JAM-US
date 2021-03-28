@@ -62,7 +62,11 @@ function Room() {
     })
 
     socket.on('Start', data => {
-      axios.get('https://opentdb.com/api.php?amount=3').then(res => {
+      const stages = localStorage.getItem('stages');
+      const category = localStorage.getItem('category');
+      const call = category === 0 ? `https://opentdb.com/api.php?amount=${stages}` : `https://opentdb.com/api.php?amount=${stages}&category=${category}`;
+
+      axios.get(call).then(res => {
         setQuestions(res.data.results);
         setStarted(true);
       }).catch(err => {
@@ -76,7 +80,11 @@ function Room() {
   }, [socket, step, history])
 
   const onStart = () => {
-    axios.get('https://opentdb.com/api.php?amount=3').then(res => {
+    const stages = localStorage.getItem('stages');
+    const category = localStorage.getItem('category');
+    const call = category === 0 ? `https://opentdb.com/api.php?amount=${stages}` : `https://opentdb.com/api.php?amount=${stages}&category=${category}`;
+
+    axios.get(call).then(res => {
       setQuestions(res.data.results);
       setStarted(true);
     }).catch(err => {

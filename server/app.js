@@ -53,13 +53,21 @@ io.on("connection", (socket) => {
     roomCreated = true;
     console.log('Room status updated');
 
-    socket.emit('CreateResponse', 'created');
+    socket.emit('CreateResponse', JSON.stringify({
+      player: infos.player,
+      stages: rules.stages_number,
+      category: rules.category_id,
+    }));
   })
 
   socket.on('Join', data => {
     players.push(data);
 
-    socket.emit('JoinResponse', 'joined');
+    socket.emit('JoinResponse', JSON.stringify({
+      player: data,
+      stages: rules.stages_number,
+      category: rules.category_id,
+    }));
   })
 
   socket.on('Access', data => {

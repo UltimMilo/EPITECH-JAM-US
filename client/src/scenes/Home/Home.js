@@ -55,20 +55,24 @@ function Home() {
     });
 
     socket.on('CreateResponse', data => {
-      if (data === 'created') {
-        localStorage.setItem('username', username)
-        history.push('/room');
-      }
+      const response = JSON.parse(data)
+
+      localStorage.setItem('username', response.player);
+      localStorage.setItem('stages', response.stages);
+      localStorage.setItem('category', response.category);
+      history.push('/room');
     })
 
     socket.on('JoinResponse', data => {
-      if (data === 'joined') {
-        localStorage.setItem('username', username)
-        history.push('/room');
-      }
+      const response = JSON.parse(data)
+
+      localStorage.setItem('username', response.player);
+      localStorage.setItem('stages', response.stages);
+      localStorage.setItem('category', response.category);
+      history.push('/room');
     })
 
-  }, [socket, history, username])
+  }, [socket, history])
 
   const handleRoomConnection = (event) => {
     event.preventDefault();

@@ -43,7 +43,7 @@ function End() {
         {score === 0 ? (
           <Button variant='outlined' onClick={() => window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ')}>Display score</Button>
         ) : (
-          <h3>Un score de {score} / {max}</h3>
+          <h3>A score of {score} / {max}</h3>
         )}
       </Paper>
     </Container>
