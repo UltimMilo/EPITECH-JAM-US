@@ -21,6 +21,7 @@ function Stage({ stage, index }) {
     } else {
       socket.emit('Answer', false);
     }
+    alert('Answer send');
   }
 
   return (
